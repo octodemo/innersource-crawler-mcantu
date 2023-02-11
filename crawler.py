@@ -33,12 +33,15 @@ if __name__ == "__main__":
 
     # Get all repos from organization
     repo_list = []
+    # Set for repos that have already been added to all_repos
+    repo_set = set()
     for topic in topics:
         search_string = "org:{} topic:{}".format(organization, topic)
         all_repos = gh.search_repositories(search_string)
 
         for repo in all_repos:
-            if repo is not None:
+            if repo is not None and repo.repository.full_name not in repo_set:
+                repo_set.add(repo.repository.full_name)
                 print("{0}".format(repo.repository))
                 full_repository = repo.repository.refresh()
 
