@@ -24,11 +24,8 @@ if __name__ == "__main__":
 
     # Set the topic
     topic = os.getenv("TOPIC")
-    # Check if there's more than one topic
-    if ',' in topic:
-        topics = [t.strip() for t in topic.split(',')]
-    else:
-        topics = [topic]
+    # Split topics by comma and strip each topic
+    topics = [t.strip() for t in topic.split(',')]
     organization = os.getenv("ORGANIZATION")
 
     # Get all repos from organization
@@ -76,8 +73,8 @@ if __name__ == "__main__":
                     pass
 
                 # fetch repository topics
-                topics = repo.repository.topics()
-                innersource_repo["_InnerSourceMetadata"]["topics"] = topics.names
+                repo_topics = repo.repository.topics()
+                innersource_repo["_InnerSourceMetadata"]["topics"] = repo_topics.names
 
                 # calculate score
                 innersource_repo["score"] = repo_activity.score.calculate(innersource_repo)
